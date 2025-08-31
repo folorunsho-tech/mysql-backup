@@ -4,8 +4,8 @@ import { backup, deleteFilesOlderThan7Days } from "./libs/mysqldump.js";
 
 const cron = nodeCron;
 dotenv.config();
+const path = process.env.UPLOAD_PATH || "./backup/";
 cron.schedule("*/30 * * * *", () => {
-	console.log("running backup task every 30 minutes");
-	backup("/school_backup/");
-	deleteFilesOlderThan7Days("/school_backup");
+	backup(path);
+	deleteFilesOlderThan7Days(path);
 });

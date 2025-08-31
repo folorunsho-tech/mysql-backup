@@ -4,9 +4,10 @@ import path from "path";
 export const backup = async (dumpToPath) => {
 	const now = new Date();
 	const year = now.getFullYear();
-	const month = now.getMonth();
+	const month = now.getMonth() + 1;
 	const date = now.getDate();
 	try {
+		console.log("Starting backup at " + new Date().toLocaleString());
 		await mysqldump({
 			connection: {
 				host: process.env.DB_HOST || "localhost",
@@ -47,7 +48,7 @@ export function deleteFilesOlderThan7Days(folderPath) {
 				const diffInMs = now - fileTime;
 				const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
 
-				if (diffInDays > 0.07) {
+				if (diffInDays > 7) {
 					fs.unlinkSync(filePath); // delete file
 					console.log(`Deleted: ${filePath}`);
 				}
