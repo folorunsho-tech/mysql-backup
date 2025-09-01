@@ -1,13 +1,13 @@
 import mysqldump from "mysqldump";
 import fs from "fs";
 import path from "path";
-export const backup = async (dumpToPath) => {
+export const backup = async (dumpToPath, task_date) => {
 	const now = new Date();
 	const year = now.getFullYear();
 	const month = now.getMonth() + 1;
 	const date = now.getDate();
 	try {
-		console.log("Starting backup at " + new Date().toLocaleString());
+		console.log("Starting backup at " + task_date);
 		await mysqldump({
 			connection: {
 				host: process.env.DB_HOST || "localhost",
@@ -18,14 +18,9 @@ export const backup = async (dumpToPath) => {
 			},
 			dumpToFile: dumpToPath + `db-backup-${year}_${month}_${date}.sql`,
 		});
-		console.log("Backup Done at " + new Date().toLocaleString());
+		console.log("Backup Done at " + task_date);
 	} catch (error) {
-		console.log(
-			"Backup Failed with error: " +
-				error +
-				" at " +
-				new Date().toLocaleDateString()
-		);
+		console.log("Backup Failed with error: " + error + " at " + task_date);
 	}
 };
 
